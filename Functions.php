@@ -97,14 +97,21 @@ function getsatnames($conn){
  return;
 }
 
-function getsatnames_new($conn){
+function getsatnames_new($conn,$windowname){
+  $id="";
+  if($windowname=="selectsatellitewindow"){
+     $id="sateliteselect";
+   }
+   else if($windowname=="deletesatellitewindow"){
+     $id="satellitedelete";
+   }
   $conn->query("USE Satellites");
   $getsatnumq= $conn->query('SELECT COUNT(*) as CNT from Satellite;');
   $size= $getsatnumq->fetch_assoc();
   $getsatq= $conn->query('SELECT * from Satellite;');
-  echo '<table id="sateliteselect" style="height: 270px; overflow-y: auto; display: block; overflow-x: auto;"><tbody>';
+  echo '<table id="'.$id.'" style="height: 270px; overflow-y: auto; display: block; overflow-x: auto;"><tbody>';
   while ($satrow=$getsatq->fetch_assoc()){
-   echo '<tr><td onclick="highlight('."'sateliteselect'".');" style="text-align: center;" value="'.$satrow['Name'].'">'.$satrow['Name'].'</td><tr>';
+   echo '<tr><td onclick="highlight('."'".$id."'".');" style="text-align: center;" value="'.$satrow['Name'].'">'.$satrow['Name'].'</td><tr>';
   }
   echo '</tbody></table>';
  return;

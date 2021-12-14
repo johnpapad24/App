@@ -163,6 +163,7 @@ function satellitelistloader(windowname){
   $.ajax({
              url: '/Apps/Satellitelistgetter.php',
              type: 'POST',
+             data: {windowname: windowname},
               error:function (xhr, ajaxOptions, thrownError){
                   if(xhr.status!=200) {
                     document.getElementById('errorwindow').innerHTML='<div style="display: block; margin: auto; text-align:center;">  <img style="vertical-align:middle;" src="Resources/error-icon.png" width="48" height="48">  <span style="color: red; font-size: 18px; font-weight: bold;">Cannot load satellite list.</span> </div>   <div style="text-align:center;"> <button onclick="showlogwindow();" style="margin:auto; text-align:center;">Show Log</button> </div>';
@@ -404,7 +405,7 @@ function searchSatellite_new2() {
   var input, filter, table, tr, td, i, txtValue;
   input = document.getElementById("satellitesearchInput2");
   filter = input.value.toUpperCase();
-  table = document.getElementById("sateliteselect");
+  table = document.getElementById("satellitedelete");
   tr = table.getElementsByTagName("tr");
 
   // Loop through all table rows, and hide those who don't match the search query
@@ -561,7 +562,6 @@ function addsatellitetodb(satname,tle1,tle2){
                 success: function(data) {
                }
            });
-           return x;
 }
 function gettle(satname){
 var x;
@@ -977,7 +977,7 @@ function adddishinterrain(viewer,terrainobjects,namestr,longitude,latitude,size,
   }
   viewer.zoomTo(dishmodel);
 }
-function checkaddsatellite(){
+function checkandaddsatellite(){
   document.getElementById("addsatellitename").setCustomValidity('');
   document.getElementById("addsatellitetle1").setCustomValidity('');
   document.getElementById("addsatellitetle2").setCustomValidity('');
@@ -1013,8 +1013,8 @@ function checkaddsatellite(){
       document.getElementById("selectsatelliteloading").style.display="block";
       document.getElementById("deletesatellitewindowtablespan").innerHTML="";
       document.getElementById("selectsatellitewindowtablespan").innerHTML="";
-      document.getElementById("deletesatellitewindowtablespan").innerHTML=satellitelistloader("deletesatellitewindow");;
-      document.getElementById("selectsatellitewindowtablespan").innerHTML=satellitelistloader("selectsatellitewindow");;
+      document.getElementById("deletesatellitewindowtablespan").innerHTML=satellitelistloader("deletesatellitewindow");
+      document.getElementById("selectsatellitewindowtablespan").innerHTML=satellitelistloader("selectsatellitewindow");
       document.getElementById("deletesatellitewindowtablespan").style.display="block";
       document.getElementById("selectsatellitewindowtablespan").style.display="block";
       document.getElementById("deletesatelliteloading").style.display="none";

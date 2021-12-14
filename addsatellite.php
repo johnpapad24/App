@@ -2,7 +2,7 @@
 require 'Functions.php';
 require 'Credentials.php';
 
-$name=$_POST['satname'];
+$satname=$_POST['satname'];
 $tle1=$_POST['tle1'];
 $tle2=$_POST['tle2'];
 
