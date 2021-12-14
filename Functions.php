@@ -237,6 +237,7 @@ function gettle($conn,$satname){
 }
 
 function addsatellite($conn,$satname,$tle1,$tle2){
+  $conn->query("USE Satellites");
   $existsq= mysqli_query($conn, 'SELECT count(*) as exist from Satellite where Name='."\"".$name."\"".';');
   $res=$existsq->fetch_assoc();
   if($res["exist"]<1){
