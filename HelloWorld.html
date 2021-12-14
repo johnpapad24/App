@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<?php
+require 'Credentials.php';
+
+$conn = mysqli_connect($servername, $username, $password);
+
+if (!$conn) {
+  die("Connection failed: " . mysqli_connect_error());
+}
+echo "Connected successfully";
+function updatedb(){
+$file=fopen($tlefile);
+while (!feof($file)){
+  $name=fgets($file);
+  $tle1=fgets($file);
+  $tle2=fgets($file);
+  $existsq= $conn->query("SELECT count(*) as exists from Satelites where Name="+$name+" ;");
+  $res=$existsq->fetch_assoc();
+  if($res["exists"]<1){
+    $insertq= $conn->query("insert into Satelite (Name, Tleline1, Tleline2, BeamCSV) Values (" +$name+","+$tle1+","+$tle2+",/CSVs/"+$name+".csv;");
+  }
+  else{
+    $updatq=$conn->query("UPDATE Satellite SET Tleline1="+$tle1+", Tleline2="+$tle2+" Where Name="+$name+";");
+  }
+  $dirname="CSVs/"+$name;
+  $cfile=$dirname+"beams.csv";
+  if(!is_dir($dirname)){
+    mkdir(dirname);
+    $csvfile=fopen($cfile, w) or die("Unable to create file!");
+    fwrite($csvfile, "Beams/TargetedSpotbeam.beam");
+    fclose($csvfile);
+
+  }
+  else if(!is_file($cfile)){
+        $csvfile=fopen($cfile, w) or die("Unable to create file!");
+    fwrite($csvfile, "Beams/TargetedSpotbeam.beam");
+    fclose($csvfile);
+  }
+}
+fclose($file);
+}
+updatedb();
+echo "db updated";
+?>
+
+<html lang="en">
+<head>
+  <!-- Use correct character set. -->
+  <meta charset="utf-8">
+  <!-- Tell IE to use the latest, best version. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>Hello World!</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script src="../Build/Cesium/Cesium.js"></script>
+  <style>
+      @import url(../Build/Cesium/Widgets/widgets.css);
+      html, body, #cesiumContainer {
+          width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+      }
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+button.close {
+    -webkit-appearance: none;
+    padding: 0;
+    cursor: pointer;
+    background: 0 0;
+    border: 0;
+    display: inline-block;
+}
+
+
+.dropbtn {
+  background-color: #3498DB;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #2980B9;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: hidden!important;
+}
+
+/* Modal Content/Box */
+.modal-content {
+
+  margin: 15% auto; /* 15% from the top and centered */
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+  position: relative;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  border: 1px solid rgba(0,0,0,.2);
+  border-radius: 6px;
+  outline: 0;
+  -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.2);
+  box-shadow: 0 3px 9px rgba(0,0,0,.2);
+
+}
+
+.modal-header {
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+    cursor:move;
+
+
+}
+
+.modal-title {
+    margin: 0;
+    line-height: 1;
+
+}
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bolder;
+  margin: -10px auto;
+}
+
+.close:hover,
+.close:focus {
+  color: red;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.show {display: block;}
+  </style>
+</head>
+<body>
+  <div id="cesiumContainer"></div>
+<div class="toolbar-left">
+
+</div>
+<div id="myModal" class="modal" data-backdrop="false" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Satelites</h4>
+      </div>
+      <div class="modal-body">
+        <p><?php
+
+
+        >
+
+        &hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+
+<div id="myModal2" class="modal" data-backdrop="false" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Add Satellite</h4>
+      </div>
+      <div class="modal-body">
+        <p>One fine body&hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+
+
+  <script>
+
+    var viewer = new Cesium.Viewer('cesiumContainer');
+   function addUpperLeftDiv() {
+    var divUL = document.getElementById('divUpperLeft');
+    if (!divUL) {
+        divUL = document.createElement('div');
+        divUL.id = 'divUpperLeft';
+        divUL.style.position = "absolute";
+        divUL.style.background = "rgba(0,0,0,0)";
+        divUL.style.left = "10px";
+        divUL.style.top = "10px";
+        divUL.innerHTML = "";
+        divUL.style.zIndex = 2000;
+        document.getElementById("cesiumContainer").appendChild(divUL);
+    }
+}
+function includeSatellitesButton() {
+
+    var divContainer = document.createElement("div");
+
+    var satellitesButton = document.createElement("input");
+    satellitesButton.id = "satellitesButton";
+    satellitesButton.type = "button";
+    satellitesButton.value = "Satellites";
+    satellitesButton.style.width = "50px";
+    satellitesButton.style.marginLeft = "5px";
+    var satelitesdropdown=document.createElement("div");
+
+    satellitesButton.onclick = function() {
+            document.getElementById("Dropdown1").classList.toggle("show");
+    };
+
+    divContainer.appendChild(satellitesButton);
+        var divContainer1 = document.createElement("div");
+        divContainer1.id="Dropdown1";
+        divContainer1.className="dropdown-content";
+        var a1= document.createElement("a");
+        a1.setAttribute('href', 'javascript:showsatellites()');
+        a1.innerText = 'Select satellite';
+        divContainer1.appendChild(a1);
+        var a2= document.createElement("a");
+        a2.setAttribute('href', 'javascript:showaddsatellte()');
+        a2.innerText = 'Add satellite';
+        divContainer1.appendChild(a2);
+        divContainer.appendChild(divContainer1);
+    document.getElementById("divUpperLeft").appendChild(divContainer);
+}
+addUpperLeftDiv();
+includeSatellitesButton();
+
+function showsatellites(){
+
+$('#myModal').modal('show')
+              .draggable({ handle: ".modal-header" });
+}
+
+function showaddsatellte(){
+$('#myModal2').modal('show')
+              .draggable({ handle: ".modal-header" });
+}
+
+  </script>
+
+
+
+
+</body>
+</html>

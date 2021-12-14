@@ -1,0 +1,49 @@
+function TargetedSpotbeamGenerator(usage,band,locationx,locationy,maxgain,mingain,semimajoraxismaxgain,eccentricity,step,tightness,rotationangle){
+  var unit;
+  var color;
+  if(usage=="D"){
+    unit="dBW";
+  }
+  else if(usage=="U"){
+    unit="dB/K";
+  }
+  if(band=="L"){
+    color=Cesium.Color.fromCssColorString("#64c2ed").withAlpha(0.3);
+  }
+  else if(band=="S"){
+    color=Cesium.Color.AQUAMARINE.withAlpha(0.3);
+  }
+  else if(band=="C"){
+    color=Cesium.Color.fromCssColorString("#e6a8d7").withAlpha(0.3);
+  }
+  else if(band=="Ku"){
+    color=Cesium.Color.fromCssColorString("#fd5e53").withAlpha(0.3);
+  }
+  else if(band=="Ka"){
+    color=Cesium.Color.ORANGE.withAlpha(0.3);
+  }
+  var stepsrequired=Math.ceil((maxgain-mingain)/step)+1;
+  var currentgain=maxgain;
+  for(var i=0;i<stepsrequired;i++){
+    var semimajoraxis=semimajoraxismaxgain+ i*(semimajoraxismaxgain/tightness);
+    var semiminoraxis=semimajoraxis*Math.sqrt(1-(eccentricity*eccentricity));
+    var beamelement=viewer.entities.add({
+      name: "Custom Targeted Spotbeam",
+      description: "Gain: "+ currentgain+unit,
+      position: Cesium.Cartesian3.fromDegrees(locationx, locationy),
+         ellipse : {
+          semiMinorAxis : semiminoraxis,
+          semiMajorAxis : semimajoraxis,
+          rotation: Cesium.Math.toRadians(rotationangle),
+          material : color,
+          zIndex : -1-i
+        }
+  });
+  currentbeamelements.push(beamelement);
+  tempbeamelements.push(beamelement);
+  currentgain=currentgain-step;
+  if(currentgain<mingain){
+    currentgain=mingain;
+  }
+  }
+}

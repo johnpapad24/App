@@ -1,0 +1,227 @@
+<html lang="en">
+<head>
+  <!-- Use correct character set. -->
+  <meta charset="utf-8">
+  <!-- Tell IE to use the latest, best version. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>Hello World!</title>
+  <link href="popupwindow.css" rel="stylesheet">
+  <link href="bootstrap.min.css" rel="stylesheet">
+	<script src="jquery-3.6.0.min.js"></script>
+  <script src="bootstrap.min.js"></script>
+	<script src="popupwindow.js"></script>
+  <script src="functions.js"></script>
+</head>
+<style>
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 45px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #337ab7;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 1px;
+  bottom: 1px;
+  background-color: white;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+input:checked + .slider {
+  background-color: #337ab7;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);
+
+
+}
+
+input:focus + .slider {
+  background-color: #337ab7;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(25px);
+  -ms-transform: translateX(25px);
+  transform: translateX(25px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 15px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+</style>
+<body>
+
+  <div id="settingsdropdown" class="dropdown dropdown-bubble">
+    <button class="genericlight" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="settingsicon"></span>
+    </button>
+  <ul id="settingsdropdownmenu" class="dropdown-menu" style="margin-top:10px;">
+    <span style="text-align:center; font-weight:bold; width: 100%; display: block; font-size:18px; ">Settings:</span>
+
+    <p></p><div><span style="font-weight: bold; width: 100%; margin-left:7px">Unit Settings: </span></div>
+      <div><span style="font-weight: normal; width: 100%; margin-left:10px">Temperature: </span>
+      <span>°C</span>
+      <input type="checkbox" id="">
+      <span>°F</span></div>
+      <div><span style="font-weight: normal; width: 100%; margin-left:10px">Distance: </span>
+      <span>km</span>
+      <input type="checkbox" id="">
+      <span>mi</span></div>
+      <div><span style="font-weight: normal; width: 100%; margin-left:10px">Earth system: </span>
+      <span>J2000</span>
+      <input type="checkbox" id="">
+      <span>TEME</span></div>
+      <p></p>
+      <div><span style="font-weight: bold; width: 100%; margin-left:7px">Viewer Settings: </span></div>
+      <div><span style="font-weight: normal; width: 100%; margin-left:10px">Show axis: </span>
+      <div style="font-weight: normal; width: 100%; margin-left:10px">
+
+     <span>Show x: </span> <input type="checkbox" id="">
+
+
+     <span>Show y: </span> <input type="checkbox" id="">
+     <span>Show z: </span> <input type="checkbox" id=""></div></div>
+     <p></p>
+     <div><span style="font-weight: bold; width: 100%; margin-left:7px">UI Settings: </span></div>
+     <div style="font-weight: normal; width: 100%; margin-left:10px">
+     <span>Dark mode: </span> <input type="checkbox" id="darkmodeswitch" onclick="toggledarkmodeonclick();"></div>
+     <p></p>
+     <div><span style="font-weight: bold; width: 100%; margin-left:7px">Miselaneous: </span></div>
+    <li><a href="" style="text-align:center;">Show log</a></li>
+    </ul>
+  </div>
+
+  <script type="text/javascript">
+
+    function toggledarkmode(){
+        dmswitch=document.getElementById("darkmodeswitch");
+        if(dmswitch.checked== true){
+          activatedarkmode();
+        }
+        else{
+          deactivatedarkmode();
+        }
+    }
+    function toggledarkmodeonclick(){
+        toggledarkmode();
+        //save preference
+    }
+    function activatedarkmode(){
+      document.getElementById("settingsdropdown").className="dropdown dropdown-bubble dropdown-bubble-dark";
+      document.getElementById("settingsdropdownmenu").className="dropdown-menu dropdown-menu-dark";
+    }
+    function deactivatedarkmode(){
+      document.getElementById("settingsdropdown").className="dropdown dropdown-bubble";
+      document.getElementById("settingsdropdownmenu").className="dropdown-menu";
+    }
+
+
+  </script>
+  <label class="switch">
+    <input type="checkbox">
+    <span class="slider round"></span>
+  </label>
+
+  </span>
+  </div>
+
+</div>
+  <h1>Things to do today</h1>
+  <ol class="switches">
+    <li>
+      <span>C</span>
+      <input type="checkbox" id="1">
+        <span>F</span>
+        <span></span>
+      </label>
+    </li>
+    <li>
+      <input type="checkbox" id="2">
+      <label for="2">
+        <span>Exercise</span>
+        <span></span>
+      </label>
+    </li>
+    <li>
+      <input type="checkbox" id="3">
+      <label for="3">
+        <span>Watch a Movie</span>
+        <span></span>
+      </label>
+    </li>
+    <li>
+      <input type="checkbox" id="4">
+      <label for="4">
+        <span>Listen to Music</span>
+        <span></span>
+      </label>
+    </li>
+    <li>
+      <input type="checkbox" id="5">
+      <label for="5">
+        <span>Try a New Recipe</span>
+        <span></span>
+      </label>
+    </li>
+    <li>
+      <input type="checkbox" id="6">
+      <label for="6">
+        <span>Do Some Gardening</span>
+        <span></span>
+      </label>
+    </li>
+    <li>
+
+      <input type="checkbox" id="7">
+      <label for="7">
+        <span>Play Free Online Games</span>
+        <span></span>
+      </label>
+    </li>
+    <li>
+      <input type="checkbox" id="8">
+      <label for="8">
+        <span>Take an Online Course</span>
+        <span></span>
+      </label>
+    </li>
+  </ol>
+\
+
+
+</body>

@@ -1,0 +1,454 @@
+<html lang="en">
+
+<head>
+
+  <!-- Use correct character set. -->
+  <meta charset="utf-8">
+
+  <!-- Tell IE to use the latest, best version. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>Hello World!</title>
+  <link href="popupwindow.css" rel="stylesheet">
+  <link href="bootstrap.min.css" rel="stylesheet">
+	<script src="jquery-3.6.0.min.js"></script>
+  <script src="bootstrap.min.js"></script>
+	<script src="popupwindow.js"></script>
+  <script src="functions.js"></script>
+  <script src="../Build/Cesium/Cesium.js"></script>
+
+</head>
+
+<style>
+
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+ .md-checkbox {
+	 position: relative;
+	 margin: 1em 0;
+	 text-align: left;
+}
+ .md-checkbox.md-checkbox-inline {
+	 display: inline-block;
+}
+ .md-checkbox label {
+	 cursor: pointer;
+	 display: inline;
+	 line-height: 14px;
+	 vertical-align: top;
+	 clear: both;
+	 padding-left: 1px;
+}
+ .md-checkbox label:not(:empty) {
+	 padding-left: 0.75em;
+}
+ .md-checkbox label:before, .md-checkbox label:after {
+	 content: "";
+	 position: absolute;
+	 left: 0;
+	 top: 0;
+}
+ .md-checkbox label:before {
+	 width: 14px;
+	 height: 14px;
+	 background: inherit;
+	 border: 2px solid #337ab7;
+	 border-radius: 0.125em;
+	 cursor: pointer;
+	 transition: background 0.3s;
+}
+ .md-checkbox input[type="checkbox"] {
+	 outline: 0;
+	 visibility: hidden;
+	 width: 14px;
+	 margin: 0;
+	 display: block;
+	 float: left;
+	 font-size: inherit;
+}
+ .md-checkbox input[type="checkbox"]:checked + label:before{
+
+	 background: #337ab7;
+	 border: none;
+text-align: center;
+position: absolute;
+font-weight: bold;
+}
+ .md-checkbox input[type="checkbox"]:checked + label:after {
+
+	 transform: translate(2.8px, 1px) rotate(-45deg);
+	 width: 8px;
+	 height: 8px;
+	 border: 2px solid #fff;
+   color: #fff;
+	 border-top-style: none;
+	 border-right-style: none;
+}
+ .md-checkbox input[type="checkbox"]:disabled + label:before {
+	 border-color: rgba(0, 0, 0, 0.26);
+}
+ .md-checkbox input[type="checkbox"]:disabled:checked + label:before {
+	 background: rgba(0, 0, 0, 0.26);
+}
+
+
+ *, *:before, *:after {
+	 box-sizing: border-box;
+}
+.dropdown-bubble .dropdown-menu:before,
+.dropdown-bubble .dropdown-menu:after{
+  content: ' ';
+  display: block;
+  border-style: solid;
+  border-width: 0 .5em .8em .5em;
+  border-color: transparent;
+  position: absolute;
+  left: 1em;
+
+}
+
+
+.dropdown-bubble .dropdown-menu:before {
+  top: -.8em;
+  border-bottom-color: rgba(0,0,0,0.5);
+}
+
+.dropdown-bubble .dropdown-menu:after {
+  top: -.7em;
+    border-bottom-color: #fff;
+
+}
+
+.dropdown-menu > li > a{
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.dropdown-menu > li > a:hover{
+  background-color: #0095ff;
+  border-radius: 100px;
+  color:white;
+}
+
+.dropdown-bubble-dark .dropdown-menu-dark:before {
+  top: -.8em;
+  border-bottom-color: rgba(0,0,0,0.5);
+}
+
+.dropdown-bubble-dark .dropdown-menu-dark:after {
+  top: -.7em;
+    border-bottom-color: #121212;
+
+}
+
+.dropdown-menu-dark{
+  color:white;
+  background-color: #121212;
+}
+.dropdown-menu-dark > li > a{
+  color:white;
+}
+
+span.settingsicon{
+background: url(Resources/Gear_icon_svg.svg) no-repeat top left;
+background-size: contain;
+cursor: pointer;
+display: inline-block;
+height: 22px;
+width: 22px;
+}
+
+button.genericlight{
+  height: 36px;
+  width: 36px;
+
+}
+
+
+.switch {
+  position: relative;
+  display: inline;
+  width: 45px;
+  height: 20px;
+  padding: 0 0 0 31;
+  min-width: 33px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #337ab7;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);
+  -webkit-transition: .3s;
+  transition: .3s;
+  min-width: 40px;
+  max-height: 14px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 1px;
+  bottom: 1px;
+  background-color: white;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+input:checked + .slider {
+  background-color: #337ab7;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);
+
+
+}
+
+input:focus + .slider {
+  background-color: #337ab7;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 15px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+</style>
+</head>
+<body>
+
+  <div id="cesiumContainer"></div>
+
+
+<div id="projectdropdown" class="dropdown dropdown-bubble" >
+  <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <span>Project</span>
+  </button>
+  <ul id="projectdropdownmenu" class="dropdown-menu" style="margin-top: 10px;">
+    <li><a href="" style="text-align:center;">Open project</a></li>
+    <li><a href="" style="text-align:center;">Save project</a></li>
+    </ul>
+  </div>
+
+  <div id="satellitesdropdown" class="dropdown dropdown-bubble" >
+    <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span>Satellites</span>
+    </button>
+    <ul id="satellitesdropdownmenu" class="dropdown-menu" style="margin-top: 10px;">
+      <li><a href="" style="text-align:center;">Manage satellites</a></li>
+      <li><a href="" style="text-align:center;">Add satellite</a></li>
+      </ul>
+    </div>
+
+    <div id="communicationsdropdown" class="dropdown dropdown-bubble" >
+      <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <span>Communications</span>
+      </button>
+      <ul id="communicationsdropdownmenu" class="dropdown-menu" style="margin-top: 10px;">
+        <li><a href="" style="text-align:center;">db fix</a></li>
+        <li><a href="" style="text-align:center;">test1</a></li>
+        </ul>
+      </div>
+
+    <div id="settingsdropdown" class="dropdown dropdown-bubble" >
+      <button class="genericlight" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <span class="settingsicon"></span>
+      </button>
+    <ul id="settingsdropdownmenu" class="dropdown-menu" style="margin-top: 10px; min-width: 250px;">
+      <span style="text-align:center; font-weight:bold; width: 100%; display: block; font-size:18px; ">Settings:</span>
+
+      <p></p><div><span style="font-weight: bold; width: 100%; margin-left:7px">Unit Settings: </span></div>
+        <div><span style="font-weight: normal; width: 100%; margin-left:10px">Temperature: </span>
+          <div style="display:inline-block;">°C</div>
+        <div style="display:inline-block; min-width:40px; text-align:left;">
+        <label class="switch">
+          <input type="checkbox" id="">
+        <span class="slider round"></span>
+        </label>
+        </div>
+        <div style="display:inline-block;">°F</div></div>
+        <div><span style="font-weight: normal; width: 100%; margin-left:10px">Distance: </span>
+        <div style="display:inline-block;">km</div>
+        <div style="display:inline-block; min-width:40px; text-align:left;">
+        <label class="switch">
+          <input type="checkbox" id="">
+        <span class="slider round"></span>
+        </label>
+        </div>
+      <div style="display:inline-block;">mi</div></div>
+        <div><span style="font-weight: normal; width: 100%; margin-left:10px">Earth system: </span>
+        <div style="display:inline-block;">J2000</div>
+        <div style="display:inline-block; min-width:40px; text-align:left;">
+        <label class="switch">
+          <input type="checkbox" id="">
+        <span class="slider round"></span>
+        </label>
+        </div>
+        <div style="display:inline-block; ">TEME</div></div>
+        <p></p>
+        <div><span style="font-weight: bold; width: 100%; margin-left:7px">Viewer Settings: </span></div>
+        <div><span style="font-weight: normal; width: 100%; margin-left:10px">Show axis: </span>
+        <div style="font-weight: normal; width: 100%; max-width:250px; max-height:20px; margin-left:-32px;" >
+
+          <span>Show x:</span>
+          <div class="md-checkbox" style="display:inline; margin-right: 1.5em;">
+            <input id="xaxischeckbox" type="checkbox">
+            <label for="xaxischeckbox"></label>
+          </div>
+          <span> Show y:</span>
+          <div class="md-checkbox" style="display:inline; margin-right:1.5em;">
+            <input id="yaxischeckbox" type="checkbox">
+            <label for="yaxischeckbox"></label>
+          </div>
+          <span> Show z:</span>
+          <div class="md-checkbox" style="display:inline; margin-left:0.2em">
+            <input id="zaxischeckbox" type="checkbox">
+            <label for="zaxischeckbox"></label>
+              </div>
+          </div></div>
+
+       <p></p>
+       <div><span style="font-weight: bold; width: 100%; margin-left:7px">UI Settings: </span></div>
+       <div style="font-weight: normal; width: 100%; margin-left: -5px;">
+       <span>Dark mode: </span>
+       <div class="md-checkbox" style="display:inline; margin-left:0.2em">
+       <input type="checkbox" id="darkmodeswitch" onclick="toggledarkmodeonclick();">
+       <label for="darkmodeswitch"></label>
+       </div></div>
+       <p></p>
+       <div><span style="font-weight: bold; width: 100%; margin-left:7px">Miselaneous: </span></div>
+      <li><a href="" style="text-align:center;">Show log</a></li>
+      </ul>
+    </div>
+
+
+    <script type="text/javascript">
+    var viewer = new Cesium.Viewer('cesiumContainer', {
+        terrainProvider: Cesium.createWorldTerrain()
+    });
+      function toggledarkmode(){
+          dmswitch=document.getElementById("darkmodeswitch");
+          if(dmswitch.checked== true){
+            activatedarkmode();
+          }
+          else{
+            deactivatedarkmode();
+          }
+      }
+      function toggledarkmodeonclick(){
+          toggledarkmode();
+          //save preference
+      }
+      function activatedarkmode(){
+        document.getElementById("projectdropdown").className="dropdown dropdown-bubble dropdown-bubble-dark";
+        document.getElementById("projectdropdownmenu").className="dropdown-menu dropdown-menu-dark";
+        document.getElementById("satellitesdropdown").className="dropdown dropdown-bubble dropdown-bubble-dark";
+        document.getElementById("satellitesdropdownmenu").className="dropdown-menu dropdown-menu-dark";
+        document.getElementById("communicationsdropdown").className="dropdown dropdown-bubble dropdown-bubble-dark";
+        document.getElementById("communicationsdropdownmenu").className="dropdown-menu dropdown-menu-dark";
+
+
+        if(document.getElementById("settingsdropdown").className.includes("open")){
+          document.getElementById("settingsdropdown").className="dropdown dropdown-bubble dropdown-bubble-dark open";
+          document.getElementById("settingsdropdownmenu").className="dropdown-menu dropdown-menu-dark";
+          return;
+        }
+        else{
+        document.getElementById("settingsdropdown").className="dropdown dropdown-bubble dropdown-bubble-dark";
+        document.getElementById("settingsdropdownmenu").className="dropdown-menu dropdown-menu-dark";
+        }
+
+      }
+      function deactivatedarkmode(){
+        document.getElementById("projectdropdown").className="dropdown dropdown-bubble";
+        document.getElementById("projectdropdownmenu").className="dropdown-menu";
+        document.getElementById("satellitesdropdown").className="dropdown dropdown-bubble";
+        document.getElementById("satellitesdropdownmenu").className="dropdown-menu";
+        document.getElementById("communicationsdropdown").className="dropdown dropdown-bubble";
+        document.getElementById("communicationsdropdownmenu").className="dropdown-menu";
+
+
+        if(document.getElementById("settingsdropdown").className.includes("open")){
+          document.getElementById("settingsdropdown").className="dropdown dropdown-bubble dropdown-bubble open";
+          document.getElementById("settingsdropdownmenu").className="dropdown-menu dropdown-menu";
+        }
+        else{
+        document.getElementById("settingsdropdown").className="dropdown dropdown-bubble";
+        document.getElementById("settingsdropdownmenu").className="dropdown-menu";
+        }
+      }
+
+
+    </script>
+
+<script>
+  $('ul.dropdown-menu').on('click', function(event){
+      // The event won't be propagated up to the document NODE and
+      // therefore delegated events won't be fired
+      event.stopPropagation();
+  });
+</script>
+  <h1>Simple material design CSS only checkbox example</h1>
+  <div class="md-checkbox">
+    <input id="i2" type="checkbox" checked>
+    <label for="i2">Item 1</label>
+  </div>
+  <div class="md-checkbox">
+    <input id="i1" type="checkbox">
+    <label for="i1">Item 2</label>
+  </div>
+  <div class="md-checkbox">
+    <input id="i3" type="checkbox">
+    <!-- Use label even if no text required -->
+    <label for="i3"></label>
+  </div>
+
+  <div class="md-checkbox">
+    <input id="i4" type="checkbox" disabled="disabled" checked>
+    <label for="i4">Disabled</label>
+  </div>
+  <div class="md-checkbox">
+    <input id="i5" type="checkbox" disabled="disabled">
+    <label for="i5">Disabled</label>
+  </div>
+
+  <div style="text-align:center">
+    <div class="md-checkbox md-checkbox-inline">
+      <input id="i10" type="checkbox">
+      <label for="i10">Inline & Centered</label>
+    </div>
+  </div>
+
+  <div>
+    <p>
+      Checkboxes use relative units and will scale to
+      your font size. By default the checkbox size is
+      set to 1.25em ($md-checkbox-size).
+    </p>
+    <div class="md-checkbox" style="font-size:20px">
+      <input id="i12" type="checkbox" checked>
+      <label for="i12">Scales with font size</label>
+    </div>
+  </div>
+</body>
